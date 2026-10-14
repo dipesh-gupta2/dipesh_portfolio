@@ -5,6 +5,6 @@
    Never put a "secret" or "service_role" key in this file.
    With both left empty the site simply shows the words it was built with. */
 window.SITE_CONFIG = {
-  supabaseUrl: '',
-  supabaseKey: ''
+  supabaseUrl: 'https://mzmcyzfjxxqjxhdkrakv.supabase.co/rest/v1/',
+  supabaseKey: 'sb_publishable_RnZrEPctqSRUr7GEJNHA_w_BEK-y12D'
 };
