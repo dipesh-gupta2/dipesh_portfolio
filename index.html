@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dipesh Gupta - AI and ML Engineer</title>
 <meta name="description" content="Portfolio of Dipesh Gupta, final-year B.Tech student in CSE (AI and ML) at KIET.">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<script src="config.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Preview build loads the font from Google Fonts. For the production build, self-host it with @font-face. -->
@@ -603,7 +608,7 @@ a{color:inherit}
 .fan-keys li.is-on{background:#f7f8ff;border-color:#f7f8ff;color:var(--accent)}
 .fan-stage{position:relative;padding:0 var(--gutter) clamp(72px,9vw,130px)}
 .fan-lines{display:none}
-.fan-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,2vw,28px);margin:0;padding:0;list-style:none}
+.fan-cards{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:clamp(14px,2vw,28px);margin:0;padding:0;list-style:none}
 .pc{position:relative}
 .pc-face{border-radius:24px}
 .pc-front{display:flex;flex-direction:column;height:100%;padding:clamp(18px,1.85vw,27px);background:#f7f8fc;color:#0c0d12}
@@ -723,6 +728,122 @@ html::-webkit-scrollbar{width:0;height:0;display:none}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:60;max-width:calc(100% - 2 * var(--gutter));padding:13px 20px;border-radius:999px;background:var(--solid);color:var(--on-solid);font:500 .9rem/1.3 var(--font);text-align:center;box-shadow:0 12px 34px rgba(12,13,18,.22);pointer-events:none;opacity:0;transform:translate(-50%,14px);transition:opacity .35s var(--ease),transform .5s var(--ease)}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){ .toast{transition:opacity .2s} .toast,.toast.is-on{transform:translate(-50%,0)} }
+/* photos added from the admin: they fill their frame */
+.media.has-photo{display:block}
+.media.has-photo img,.cover-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.cover-photo{background:#101116}
+.cover-word.is-long{max-width:86%;flex-wrap:wrap;justify-content:center;font-size:clamp(1.5rem,3.7vw,3.4rem);font-weight:500;letter-spacing:-.02em;text-align:center}
+/* ------------------------------------------------------------------
+   Events: a part of the record whose rows carry a cover photo, and a
+   gallery that opens over the page with the photos arriving row by row.
+------------------------------------------------------------------- */
+.lg-event{padding:clamp(18px,2vw,30px) 0}
+.ev-cover{grid-column:1;grid-row:1;justify-self:end;align-self:start;position:relative;margin:0;width:min(100%,clamp(170px,19vw,300px));aspect-ratio:4/3;overflow:hidden;border-radius:4px;background:#11131a;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.ev-cover img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 1.3s var(--ease),filter .6s var(--ease);filter:saturate(.85) brightness(.9)}
+.lg-event .lg-a{transition:color .4s var(--ease)}
+.ev-open{display:inline-flex;align-items:center;gap:.7em;margin-top:.35em;padding:0 0 .3em;border:0;border-bottom:1px solid rgba(243,244,246,.5);background:none;color:#f3f4f6;font:600 .74em/1 var(--font);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-shadow:none;transition:border-color .4s var(--ease)}
+.ev-open svg{width:2.4em;height:1.2em;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .5s var(--ease)}
+.ev-open::after{content:"";position:absolute;inset:0;z-index:1}          /* the whole row opens the photos */
+.ev-open:focus-visible{outline:2px solid #f3f4f6;outline-offset:4px}
+@media (hover:hover){
+  .lg-event:has(.ev-open):hover .ev-cover img{transform:scale(1);filter:none}
+  .lg-event:has(.ev-open):hover .ev-open{border-color:#f3f4f6}
+  .lg-event:has(.ev-open):hover .ev-open svg{transform:translateX(6px)}
+}
+
+/* ---------- the gallery ---------- */
+.ev-sheet{position:fixed;inset:0;z-index:70;background:#05060a;color:#f3f4f6;clip-path:inset(100% 0 0 0);transition:clip-path .85s var(--ease);visibility:hidden}
+.ev-sheet.is-open{clip-path:inset(0 0 0 0);visibility:visible}
+.ev-sheet.is-leaving{clip-path:inset(0 0 100% 0);transition-duration:.7s}
+.ev-scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(104px,13vw,170px) var(--gutter) clamp(80px,10vw,140px)}
+.ev-top{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);column-gap:clamp(20px,3vw,44px);align-items:end;margin-bottom:clamp(28px,4vw,56px)}
+.ev-title{grid-column:1 / -1;margin:0 0 clamp(18px,2.4vw,30px);max-width:13ch;font-size:clamp(2.4rem,7.4vw,7.2rem);font-weight:400;line-height:.95;letter-spacing:-.035em;text-transform:uppercase}
+.ev-title .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em}
+.ev-title .w > span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease);transition-delay:calc(.25s + var(--i,0) * 70ms)}
+.ev-sheet.is-open .ev-title .w > span{transform:none}
+.ev-meta{margin:0;display:flex;flex-wrap:wrap;gap:.6em 1.6em;font:400 clamp(.9rem,1.1vw,1rem)/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.02em;color:rgba(243,244,246,.86)}
+.ev-note{margin:0;max-width:46ch;font-size:clamp(1rem,1.25vw,1.15rem);line-height:1.45;color:rgba(243,244,246,.7)}
+.ev-meta,.ev-note{opacity:0;transform:translateY(16px);transition:opacity .8s var(--ease) .55s,transform 1s var(--ease) .55s}
+.ev-sheet.is-open .ev-meta,.ev-sheet.is-open .ev-note{opacity:1;transform:none}
+.ev-hero{position:relative;display:block;width:100%;padding:0;border:0;margin:0 0 clamp(8px,1vw,14px);overflow:hidden;border-radius:4px;background:#11131a;cursor:zoom-in}
+.ev-hero img{display:block;width:100%;max-height:82vh;max-height:82svh;object-fit:cover;transform:scale(1.18);opacity:0;transition:transform 1.8s var(--ease) .2s,opacity 1s var(--ease) .2s}
+.ev-sheet.is-open .ev-hero img{transform:none;opacity:1}
+.ev-grid{--rh:clamp(140px,16vw,260px);display:flex;flex-wrap:wrap;gap:clamp(8px,1vw,14px)}
+.ev-grid::after{content:"";flex-grow:1000000}                         /* the last row keeps its natural sizes */
+.ev-item{position:relative;display:block;flex:1 1 var(--rh);aspect-ratio:1.5;margin:0;padding:0;border:0;border-radius:3px;background:none;cursor:zoom-in}
+.ev-clip{position:absolute;inset:0;overflow:hidden;border-radius:3px;background:#11131a;clip-path:inset(100% 0 0 0);transition:clip-path 1.05s var(--ease);transition-delay:var(--d,0ms)}   /* the clip sits inside, so the watcher still sees the photo's box */
+.ev-item img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.22);transition:transform 1.5s var(--ease),filter .5s;transition-delay:var(--d,0ms)}
+.ev-item.in .ev-clip{clip-path:inset(0 0 0 0)}
+.ev-item.in img{transform:none}
+.ev-item:focus-visible,.ev-hero:focus-visible{outline:2px solid #f3f4f6;outline-offset:3px}
+@media (hover:hover){ .ev-item:hover img{filter:brightness(1.08)} }
+.ev-end{display:flex;justify-content:center;margin-top:clamp(48px,7vw,96px)}
+.ev-back{display:inline-flex;align-items:center;gap:14px;height:52px;padding:0 24px;border:0;border-radius:999px;background:#f3f4f6;color:#0c0d12;font:600 .74rem/1 var(--font);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:transform .15s}
+.ev-back:active,.ev-close:active{transform:scale(.96)}
+.ev-close{position:absolute;z-index:3;top:clamp(22px,3.4vw,33px);right:var(--gutter);display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:#f3f4f6;color:#0c0d12;cursor:pointer;opacity:0;transform:rotate(-90deg) scale(.6);transition:opacity .5s var(--ease) .45s,transform .7s var(--ease) .45s}
+.ev-sheet.is-open .ev-close{opacity:1;transform:none}
+.ev-close svg,.ev-arrow svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+
+/* one photo at a time */
+.ev-box{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:rgba(5,6,10,.97);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility 0s .4s;touch-action:pan-y}
+.ev-box.is-on{opacity:1;visibility:visible;transition:opacity .4s var(--ease)}
+.ev-box img{max-width:min(92vw,1800px);max-height:82vh;max-height:82svh;object-fit:contain;border-radius:3px;user-select:none;-webkit-user-drag:none;transition:opacity .3s var(--ease),transform .5s var(--ease)}
+.ev-box img.is-swap{opacity:0;transform:scale(.97)}
+.ev-box .ev-close{opacity:1;transform:none;transition:none}
+.ev-count{position:absolute;left:var(--gutter);top:clamp(34px,4.6vw,46px);margin:0;font:400 .95rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:rgba(243,244,246,.86)}
+.ev-arrow{position:absolute;top:50%;display:grid;place-items:center;width:52px;height:52px;margin-top:-26px;padding:0;border:1px solid rgba(243,244,246,.35);border-radius:50%;background:rgba(5,6,10,.4);color:#f3f4f6;cursor:pointer;transition:background-color .3s,border-color .3s}
+.ev-arrow[data-step="-1"]{left:var(--gutter)}
+.ev-arrow[data-step="1"]{right:var(--gutter)}
+@media (hover:hover){ .ev-arrow:hover{background:#f3f4f6;border-color:#f3f4f6;color:#0c0d12} }
+.ev-arrow:disabled{opacity:.25;cursor:default}
+html.ev-lock,html.ev-lock body{overflow:hidden}
+
+@media (max-width:820px){
+  .lg-event.has-cover{grid-template-columns:minmax(0,1fr)}
+  .ev-cover{grid-column:1;grid-row:1;justify-self:stretch;width:100%;aspect-ratio:16/10;margin-bottom:16px}
+  .lg-event.has-cover > .lg-a{grid-row:2}
+  .lg-event.has-cover > .lg-rows{grid-row:3}
+  .ev-top{grid-template-columns:minmax(0,1fr);row-gap:14px}
+  .ev-grid{--rh:120px}
+  .ev-arrow{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);margin-top:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .ev-sheet,.ev-sheet.is-leaving{clip-path:none;transition:opacity .2s;opacity:0}
+  .ev-sheet.is-open{opacity:1}
+  .ev-title .w > span,.ev-meta,.ev-note,.ev-hero img,.ev-clip,.ev-item img,.ev-close{transform:none !important;opacity:1 !important;clip-path:none !important;transition:none !important}
+}
+@media (max-width:820px){ .lg-event > .lg-a{font:500 1.05rem/1.3 var(--font);letter-spacing:-.005em;text-transform:none;color:#f3f4f6} }
+/* ------------------------------------------------------------------
+   Sections added in the studio. Each one borrows the look and motion of
+   a built-in section; these rules only add what a borrowed look needs.
+------------------------------------------------------------------- */
+.xs.is-dark{--ground:#05060a;--fg:#f3f4f6;--muted:#a2a6b5;--line:rgba(243,244,246,.16);--solid:#f3f4f6;--on-solid:#0c0d12;--wet-bg:#05060a;color:var(--fg)}
+.xs.is-blue{--ground:#1b33f5;--fg:#f7f8ff;--muted:rgba(247,248,255,.74);--line:rgba(247,248,255,.26);--solid:#f7f8ff;--on-solid:#1b33f5;--wet-bg:#1b33f5;color:var(--fg)}
+.xs-text{position:relative;z-index:1;padding:clamp(96px,13vw,190px) var(--gutter)}
+.xs-kicker{margin:0 0 1.5em;font:500 .78rem/1.5 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xs-title{margin:0;max-width:15ch;font-size:clamp(2.6rem,7vw,6.6rem);font-weight:400;line-height:1;letter-spacing:-.035em}
+.xs-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(24px,4vw,64px);margin-top:clamp(36px,5vw,76px);align-items:end}
+.xs-grid:not(.has-photo) .xs-copy{grid-column:2}
+.xs-copy p{margin:0 0 1em;max-width:40ch;font-size:clamp(1.05rem,1.45vw,1.35rem);line-height:1.45}
+.xs-copy .pill{margin-top:.6em}
+.xs-photo{margin:0;overflow:hidden;border-radius:6px;aspect-ratio:4/3;background:var(--line)}
+.xs-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.xs-kicker,.xs-copy{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease) .3s,transform 1.1s var(--ease) .3s}
+.xs-photo{clip-path:inset(100% 0 0 0);transition:clip-path 1.2s var(--ease) .15s}
+.xs-photo img{transform:scale(1.2);transition:transform 1.8s var(--ease) .15s}
+.xs-text.seen .xs-kicker,.xs-text.seen .xs-copy{opacity:1;transform:none}
+.xs-text.seen .xs-photo{clip-path:inset(0 0 0 0)}
+.xs-text.seen .xs-photo img{transform:none}
+.xs-cards{color:var(--fg)}
+.xs-ledger .ledger-body{padding-bottom:clamp(110px,14vw,200px)}
+@media (max-width:820px){
+  .xs-grid{grid-template-columns:minmax(0,1fr);row-gap:28px}
+  .xs-grid:not(.has-photo) .xs-copy{grid-column:1}
+  .xs-title{font-size:clamp(2.3rem,11vw,4rem)}
+}
+@media (prefers-reduced-motion:reduce){
+  .xs-kicker,.xs-copy,.xs-photo,.xs-photo img{opacity:1 !important;transform:none !important;clip-path:none !important;transition:none !important}
+}
 /* without motion: one still picture, all the words in place */
 .deep.is-still{height:auto}
 .is-still .deep-pin{position:relative}
@@ -1285,7 +1406,249 @@ html::-webkit-scrollbar{width:0;height:0;display:none}
   </div>
 </section>
 
+<script id="siteContent" type="application/json">{"version":3,"meta":{"title":"Dipesh Gupta - AI and ML Engineer","description":"Portfolio of Dipesh Gupta, final-year B.Tech student in CSE (AI and ML) at KIET."},"contact":{"email":"dipeshg976@gmail.com","address":["Muradnagar","Ghaziabad","Uttar Pradesh","India"],"links":[{"label":"LinkedIn","url":"https://www.linkedin.com/in/dipesh-gupta1/"},{"label":"LIMMA","url":"https://limma.live"}],"footerTitle":"Write to me directly","copyright":"©2026 Dipesh Gupta"},"home":{"headline":"I turn ideas into working software, across AI, data and security","about":{"title1":"From research","title2":"to real products","text":"I'm a final-year B.Tech student in CSE (AI & ML) at KIET, ranked first in my branch with a GPA of 8.9. I've done AI research at DTTC, DRDO, built LIMMA, a natural language command system, and taught more than 100 students.","button":"See projects","image":"about.jpg"},"projects":{"title":"Projects","note":"Two builds from 2024 and 2025: an AI command system and a real-time cyber incident feed.","items":[{"name":"LIMMA","when":"Mar 2024 - Dec 2025","tags":["Natural language","Automation","Event-driven"],"text":"An AI-powered natural language command system for real-time, context-aware automation. It runs low-latency, event-driven workflows, with auto-discovery for scalable command execution.","url":"https://limma.live","linkLabel":"Visit limma.live","cover":"blue","coverText":"LIMMA","image":""},{"name":"Real-Time Cyber Incident Feed Generator","when":"Oct 2024 - Feb 2025","tags":["Web crawling","NLP","Dashboard"],"text":"A system for real-time extraction and analysis of cyber incidents, built with web crawling and NLP. A structured dashboard raises severity-based alerts to improve cybersecurity awareness.","url":"","linkLabel":"","cover":"dark","coverText":"Cyber Incident Feed","image":""}]},"experience":{"title":"Experience across research, product and teaching","items":[{"org":"DTTC, DRDO","role":"AI Research Intern","years":"2026","where":"Defence Technology and Test Centre (DTTC), DRDO, Lucknow","dates":"Jun 2026 - Aug 2026","points":["Worked on artificial intelligence and machine learning applications, contributing to the development and evaluation of data-driven models for research-oriented defence technology use cases.","Performed data preprocessing, feature engineering, model training and performance analysis while exploring advanced AI techniques for improving prediction accuracy and decision-making.","Collaborated with researchers and technical experts to implement, test and document AI solutions in a real-world research and development environment."]},{"org":"MetaUpSpace","role":"Social Media Manager Intern","years":"2025","where":"MetaUpSpace, Ghaziabad","dates":"Feb 2025 - Mar 2025","points":["Managed multiple social media pages, leading a 4-member team: planned content ideas, coordinated shoots, and kept the brand identity consistent and posting optimized for higher reach.","Supervised the content production workflow, including task distribution, editing oversight, performance tracking, team coordination and regular updates for timely, quality delivery."]},{"org":"Bandiz Technoz","role":"AI & Product Development Intern","years":"2025","where":"Bandiz Technoz, Ghaziabad","dates":"Apr 2025 - Nov 2025","points":["Worked on AI-based automation tools, contributing to feature development.","Optimized UI/UX flows and implemented platform integrations (WhatsApp, Telegram).","Performed testing and deployment in a compliance-focused product environment.","Supported technical architecture planning, documentation and product demos.","Translated complex AI workflows into scalable, user-ready solutions."]},{"org":"Bhu-Unnati Vermicompost","role":"Data Analyst Intern","years":"2024 - 2025","where":"Bhu-Unnati Vermicompost, Ghaziabad","dates":"Oct 2024 - Feb 2025","points":["Assisted in increasing client acquisition by 30% through targeted digital marketing and sales strategies.","Managed social media marketing, website updates and promotional campaigns.","Boosted online engagement by 40%."]},{"org":"Freelance","role":"Computer Science Tutor & Developer","title":"Freelance Computer Science Tutor & Developer","years":"2019 - Present","where":"Self-employed (hybrid)","dates":"Jan 2019 - Present","points":["Taught 100+ students over 6+ years.","Covered Python, SQL, DSA, AI/ML and cybersecurity with hands-on projects."]}]},"talk":{"lead":"Have a role, a project or a question?","title":"Let's talk","next":"More about me + Next page + "}},"more":{"opening":{"name":"Dipesh","left":["I am","A final year","AI & ML engineer"],"right":["Branch topper","and research scholar"],"sayEm":"Also","say":"a three-time hackathon winner and an anchor with 70+ events on stage.","say2":"The rest of my resume is below: where I studied, what I researched, the tools I use, and what I do outside class."},"roles":{"title":"Roles","items":[{"name":"DevUp","role":"ML Lead","dates":"Sep 2023 - Present","group":"Volunteering and co-curricular","letter":"D","text":"Conducting AI/ML workshops. Mentored 15+ juniors in ML, deep learning, and real-world applications."},{"name":"Cyber Peace Centre, KIET","role":"Tech Member & Content Coordinator","dates":"Sep 2023 - Present","group":"Volunteering and co-curricular","letter":"C","text":"Conducted cybersecurity awareness programs in schools. Mentored 60+ juniors in cybersecurity fundamentals."},{"name":"NSS KIET","role":"Member","dates":"May 2024 - Present","group":"Volunteering and co-curricular","letter":"N","text":"Community service projects, event organisation, and volunteer initiatives."},{"name":"Creative Cell","role":"KIET Group of Institutions","dates":"Mar 2024 - Present","group":"Extracurricular activities","letter":"C","text":"Managed 60+ events. Content writing and script writing. Handled a team of 50+ students for the digital branding of the college. Responsible for all club collaboration and student representation. Core involvement in decision-making, leadership, team bonding, content writing, and training juniors to run the club."},{"name":"Anchoring","role":"","dates":"Mar 2023 - Present","group":"Extracurricular activities","letter":"A","text":"Recognized as a top 10 speaker in a 2023-24 MUN competition. Anchored 70+ events, showcasing strong communication and presentation skills. Recently anchored Star Night Epoque at Prastuti 2026 and opened the stage for the star Harrdy Sandhu in front of more than 10,000 people."},{"name":"GDSC","role":"Member","dates":"","group":"Extracurricular activities","letter":"G","text":"Contributed to open-source projects. Participated in tech workshops and hackathons. Collaborated on AI/ML and software development initiatives."}]},"skills":{"title":"Skills I work with","note":"Languages, frameworks and platforms, plus the coursework behind them.","rows":[[{"name":"Python","group":"Programming"},{"name":"C++","group":"Programming"},{"name":"Java","group":"Programming"},{"name":"NumPy","group":"Libraries"},{"name":"Pandas","group":"Libraries"},{"name":"Scikit-learn","group":"Libraries"},{"name":"Matplotlib","group":"Libraries"},{"name":"Seaborn","group":"Libraries"},{"name":"Git","group":"DevTools"},{"name":"GitHub Actions","group":"DevTools"}],[{"name":"TensorFlow","group":"Frameworks"},{"name":"PyTorch","group":"Frameworks"},{"name":"FastAPI","group":"Frameworks"},{"name":"LangChain","group":"Frameworks"},{"name":"LangGraph","group":"Frameworks"},{"name":"Hugging Face Transformers","group":"Frameworks"},{"name":"Deep Learning","group":"AI & ML"},{"name":"Data Science","group":"AI & ML"},{"name":"Generative AI","group":"AI & ML"},{"name":"Conversational AI","group":"AI & ML"}],[{"name":"AWS (EC2, S3, ECR)","group":"Cloud / Databases"},{"name":"MySQL","group":"Cloud / Databases"},{"name":"Kali Linux","group":"Cybersecurity"},{"name":"Ethical Hacking","group":"Cybersecurity"},{"name":"Computer Networking","group":"Networking"},{"name":"Data Structures & Algorithms","group":"Coursework"},{"name":"Operating Systems","group":"Coursework"},{"name":"OOP","group":"Coursework"},{"name":"DBMS","group":"Coursework"},{"name":"Software Engineering","group":"Coursework"}]]},"record":{"words":["Branch","topper","Research","scholar","Hackathon","winner","Stage","anchor"],"sections":[{"nav":"Education","title":"Education","count":"03","groups":[{"name":"KIET Group of Institutions","rows":[{"mark":"8.9/10","title":"B.Tech in Computer Science Engineering (AI & ML)","note":"Oct 2023 - Aug 2027. GPA, branch topper, 1st rank"}]},{"name":"Sacred Heart Higher Secondary School","rows":[{"mark":"92%","title":"Intermediate (Class XII)","note":"Apr 2022 - Mar 2023. School topper, 3rd rank"},{"mark":"96.6%","title":"High School (Class X)","note":"Apr 2020 - Mar 2021. School topper, 3rd rank"}]}]},{"nav":"Research","title":"Research","count":"01","groups":[{"name":"Centre of Research & Product Development, KIET","rows":[{"mark":"2024-25","title":"Research Scholar","note":"Mar 2024 - Feb 2025"},{"mark":"","title":"Explored Retrieval-Augmented Generation (RAG) and Transformer models.","note":""},{"mark":"","title":"Analyzed BERT and GPT for NLP tasks and chatbot accuracy improvement.","note":""},{"mark":"","title":"Implemented AI-driven workflows using N8N.","note":""},{"mark":"","title":"Developed automated workflows integrating AI models for cybersecurity and automation.","note":""}]}]},{"nav":"Publications","title":"Publications and presentations","count":"01","groups":[{"name":"Cyber Peace Centre","rows":[{"mark":"Upcoming","title":"“Level Up Your Squad: How Gamified Phishing Attacks Are Targeting Gen Z”","note":"Cybersecurity in Online Gaming. Awareness article on scam tactics, defense strategies, and ethical hacking. To be published by Cyber Peace Centre."}]}]},{"kind":"events","nav":"Events","title":"Events","count":"","events":[{"title":"Star Night Epoque, Prastuti 2026","date":"2026","place":"Anchor","note":"Opened the stage for Harrdy Sandhu in front of more than 10,000 people.","cover":"","photos":[]},{"title":"Tinkercase 2.0 Hackathon","date":"2025","place":"DTU","note":"Winner, 1st prize","cover":"","photos":[]},{"title":"NxT Wave Hackathon","date":"2025","place":"","note":"Winner, 1st prize at state level by OpenAI, and 4th in the top 15 at national level","cover":"","photos":[]},{"title":"Bharat Shiksha Expo Hackathon","date":"2024","place":"","note":"Winner, 1st prize","cover":"","photos":[]},{"title":"Model United Nations","date":"2023-24","place":"","note":"Recognized as a top 10 speaker","cover":"","photos":[]}]}]},"awards":{"title1":"Awards and","title2":"certificates","note":"Ten awards and scholarships and seven certifications from my resume, in four cards.","cards":[{"key":"W","title":"Wins","kind":"Awards","rows":[{"title":"Bharat Shiksha Expo 2024 Hackathon","note":"Winner, 1st prize"},{"title":"Tinkercase 2.0 2025 Hackathon","note":"Winner, 1st prize (DTU)"},{"title":"NxT Wave Hackathon 2025","note":"Winner, 1st prize at state level by OpenAI, and 4th in the top 15 at national level"},{"title":"Best Hackathon Winner Award 2023-26","note":"KIET University"},{"title":"Best Coder Award 2023","note":"KIET Group of Institutions"}]},{"key":"H","title":"Honours","kind":"Awards and scholarships","rows":[{"title":"Fee Waiver (FW) Seat Scholarship","note":"100% academic fee waiver (top 5%)"},{"title":"Best Academic Excellence Award 2023-26","note":"KIET University"},{"title":"Best Cultural Male Award 2023-26","note":"KIET University"},{"title":"Best Project Award 2023-26","note":"KIET University"},{"title":"Certificate of Appreciation","note":"For outstanding contribution to digital branding and institutional representation through anchoring (2023-2026), KIET University"}]},{"key":"S","title":"Security","kind":"Certifications","rows":[{"title":"Google Cybersecurity Professional Certificate","note":"Jul 2024"},{"title":"CompTIA PenTest+ (TryHackMe)","note":"Jun 2024"},{"title":"Automate Cybersecurity Tasks with Python, Google","note":"Jun 2024"}]},{"key":"T","title":"Tech","kind":"Certifications","rows":[{"title":"Google AI Essentials","note":"Jul 2024"},{"title":"AWS Certified Cloud Practitioner","note":"Nov 2025"},{"title":"MongoDB Certified","note":"Sep 2025"},{"title":"Multiple certifications of Cisco Networking Academy","note":"2023 - 2026"}]}]},"connect":{"lead":"Have a role, a project or a question?","line1":"Let's","line2":"connect","back":"Back to home"}}}</script>
 <script>
+/* ====================================================================
+   Site content. Every word on both pages comes from one content object:
+   the copy baked into this file, or the latest published copy from the
+   database when one is set up in config.js. It is written into the page
+   before any animation starts, so the animations always see the final
+   words. In the admin's preview the content arrives from the admin.
+==================================================================== */
+(() => {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const safeUrl = (u) => { const s = String(u || '').trim(); return /^(https?:|mailto:|#|\/|\.\.?\/)/i.test(s) || /^([\w-]+\/)*[\w-]+\.(jpe?g|png|webp|gif|avif|svg)$/i.test(s) ? s : (s ? 'https://' + s : ''); };   /* a bare file name such as about.jpg stays next to the page */
+  const pad = (n) => String(n).padStart(2, '0');
+  const set = (sel, text) => { const el = $(sel); if (el) el.textContent = text == null ? '' : text; };
+  const html = (sel, markup) => { const el = $(sel); if (el) el.innerHTML = markup; };
+  const ARROW = '<svg viewBox="0 0 44 22" aria-hidden="true" focusable="false"><path d="M2 11h40M33 2.5 41.5 11 33 19.5"/></svg>';
+  const slug = (s, i) => (String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'part') + (i == null ? '' : '');
+
+  const photosOf = (e) => (e.photos || []).map((p) => (typeof p === 'string' ? { src: p } : p)).filter((p) => p && p.src);
+  const coverOf = (e, shots) => (e.cover ? shots.find((p) => p.src === e.cover) || { src: e.cover } : shots[0]) || null;
+  /* content saved before a newer version of the site gains the parts that version added */
+  const upgrade = (c, base) => {
+    if (!c || !base || (c.version || 1) >= (base.version || 1)) return c;
+    const parts = (((c.more || {}).record || {}).sections) || [], add = ((((base.more || {}).record || {}).sections) || []).filter((s) => s.kind === 'events');
+    if ((c.version || 1) < 2 && !parts.some((s) => s.kind === 'events')) parts.push(...JSON.parse(JSON.stringify(add)));
+    const ab = (c.home || {}).about, bab = (base.home || {}).about;
+    if ((c.version || 1) < 3 && ab && bab && !ab.image) ab.image = bab.image;            /* version 3 brought the photo on the About card */
+    c.version = base.version;
+    return c;
+  };
+
+  /* ---------- pieces shared by the built-in sections and the ones added in the studio ---------- */
+  let events = {};
+  const workCard = (p) => {
+      const url = safeUrl(p.url);
+      const cover = p.image
+        ? `<span class="cover cover-photo"><img src="${esc(safeUrl(p.image))}" alt="" loading="lazy" decoding="async"></span>`
+        : `<span class="cover ${p.cover === 'dark' ? 'cover-feed' : 'cover-limma'}"><span class="cover-word${(p.coverText || p.name || '').length > 9 && p.cover !== 'dark' ? ' is-long' : ''}">${esc(p.coverText || p.name)}${p.cover === 'dark' ? '' : '<span class="caret"></span>'}</span></span>`;
+      const open = url ? `<a class="work-media" data-bend data-dark href="${esc(url)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">` : '<div class="work-media" data-bend data-dark aria-hidden="true">';
+      return `<article class="work">${open}<span class="work-bend">${cover}</span>${url ? '</a>' : '</div>'}
+        <div class="work-meta"><div class="work-row"><ul class="tags">${(p.tags || []).filter(Boolean).map((t) => `<li>${esc(t)}</li>`).join('')}</ul><span class="when">${esc(p.when)}</span></div>
+        <h3>${esc(p.name)}</h3><p>${esc(p.text)}</p>${url && p.linkLabel ? `<a class="pill" href="${esc(url)}" target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>${esc(p.linkLabel)}</a>` : ''}</div></article>`;
+    };
+  const listRows = (groups) => (groups || []).map((g) => `<li class="lg-group"><p class="lg-a">${esc(g.name)}</p><ul class="lg-rows">${(g.rows || []).map((r) =>
+    `<li><span class="lg-b"${r.mark ? '' : ' aria-hidden="true"'}>${esc(r.mark)}</span><span class="lg-c">${esc(r.title)}${r.note ? `<small>${esc(r.note)}</small>` : ''}</span></li>`).join('')}</ul></li>`).join('');
+  const eventRows = (evs, keyBase) => evs.map((e, j) => {
+    const shots = photosOf(e), key = `${keyBase}-${j}`, cov = coverOf(e, shots);
+    events[key] = { title: e.title, date: e.date, place: e.place, note: e.note, cover: cov, photos: shots };
+    const n = shots.length;
+    return `<li class="lg-group lg-event${cov ? ' has-cover' : ''}">${cov ? `<figure class="ev-cover" aria-hidden="true"><img src="${esc(safeUrl(cov.thumb || cov.src))}" alt="" loading="lazy" decoding="async"></figure>` : ''}<p class="lg-a">${esc(e.title)}</p>
+      <ul class="lg-rows"><li><span class="lg-b"${e.date ? '' : ' aria-hidden="true"'}>${esc(e.date)}</span><span class="lg-c">${e.place ? `${esc(e.place)}${e.note ? `<small>${esc(e.note)}</small>` : ''}` : esc(e.note)}</span></li>
+      ${n ? `<li><span class="lg-b" aria-hidden="true"></span><span class="lg-c"><button class="ev-open" type="button" data-ev="${key}">See ${n} ${n === 1 ? 'photo' : 'photos'}${ARROW}</button></span></li>` : ''}</ul></li>`;
+  }).join('');
+  /* one ruled part: a list, or events with photos (an events part with no events stays off the page) */
+  const part = (sec, attrs, key) => {
+    const isEv = sec.kind === 'events' || sec.template === 'events', evs = isEv ? (sec.events || []).filter((e) => e && (e.title || '').trim()) : [];
+    if (isEv && !evs.length) return '';
+    const count = sec.count || (isEv ? pad(evs.length) : '');
+    const head = `<header class="lg-head"><h2 class="lg-title">${esc(sec.title)}</h2><p class="lg-count" aria-hidden="true"><span class="plus"></span>${esc(count)}</p></header>`;
+    return `<section class="lg${isEv ? ' lg-events' : ''}"${attrs}>${head}<ul class="lg-list">${isEv ? eventRows(evs, key) : listRows(sec.groups)}</ul></section>`;
+  };
+
+  /* ---------- sections added in the studio, each placed after the section it names ---------- */
+  const PLACES = ['about', 'projects', 'experience', 'reel', 'more', 'roles', 'skills', 'record', 'awards'];
+  const extra = (x, i) => {
+    const [page, after] = String(x.place || '').split(':');
+    if (!PLACES.includes(after)) return null;
+    const nav = esc(x.nav || x.title || 'Section'), id = 'x-' + slug(x.nav || x.title) + '-' + i, t = x.template;
+    const tone = x.tone === 'blue' ? 'blue' : x.tone === 'dark' || page === 'more' ? 'dark' : 'page';
+    const shade = tone === 'page' ? '' : ` is-${tone} wet`, darkAttr = tone === 'page' ? '' : ' data-dark';
+    const base = `id="${id}" data-tpl="${t}" data-site data-nav="${nav}"`;
+    const words = (x.words || []).filter((w) => String(w).trim()).length ? x.words.filter((w) => String(w).trim()) : String(x.title || '').split(/\s+/).filter(Boolean);
+    let h = '';
+    if (t === 'text') {
+      const link = String(x.link || '').trim(), inner = link.startsWith('#');
+      const paras = String(x.text || '').split(/\n\s*\n/).map((q) => q.trim()).filter(Boolean).map((q) => `<p>${esc(q).replace(/\n/g, '<br>')}</p>`).join('');
+      h = `<section class="xs xs-text${shade}" ${base}${darkAttr}><div class="xs-wrap">${x.kicker ? `<p class="xs-kicker">${esc(x.kicker)}</p>` : ''}<h2 class="xs-title" data-words>${esc(x.title)}</h2>
+        <div class="xs-grid${x.image ? ' has-photo' : ''}">${x.image ? `<figure class="xs-photo"><img src="${esc(safeUrl(x.image))}" alt="" loading="lazy" decoding="async"></figure>` : ''}<div class="xs-copy">${paras}${x.button && link ? `<a class="pill" href="${esc(inner ? link : safeUrl(link))}"${inner ? ' data-go' : ' target="_blank" rel="noopener"'}><span class="dot" aria-hidden="true"></span>${esc(x.button)}</a>` : ''}</div></div></div></section>`;
+    } else if (t === 'cards') {
+      h = `<section class="projects xs xs-cards${shade}" ${base}${darkAttr}><div class="sec-head"><h2 class="sec-title" data-letters>${esc(x.title)}</h2><p class="sec-note">${esc(x.note)}</p></div>
+        <div class="work-grid">${(x.items || []).map(workCard).join('')}</div></section>`;
+    } else if (t === 'list' || t === 'events') {
+      const inner = part(x, '', id);
+      if (!inner) return null;
+      h = `<section class="ledger xs xs-ledger" ${base} data-dark><div class="ledger-bg" aria-hidden="true"><canvas></canvas></div>
+        <div class="ledger-words" aria-hidden="true">${words.map((w) => `<span>${esc(w)}</span>`).join('')}</div><div class="ledger-body">${inner}</div></section>`;
+    } else if (t === 'rows') {
+      h = `<section class="wall wet xs xs-rows" ${base} data-dark><header class="wall-head"><h2 class="wall-title">${esc(x.title)}</h2><p class="wall-note">${esc(x.note)}</p></header>
+        ${(x.rows || []).filter((r) => r && r.length).map((row) => `<div class="wall-row"><ul class="wall-track">${row.map((k) => `<li><b>${esc(k.name)}</b><span>${esc(k.group)}</span></li>`).join('')}</ul></div>`).join('')}</section>`;
+    } else return null;
+    return { after, h };
+  };
+  const placeExtras = (list) => {
+    document.querySelectorAll('.xs').forEach((el) => el.remove());
+    const last = {};
+    (list || []).forEach((x, i) => {
+      const r = x && extra(x, i); if (!r) return;
+      const at = last[r.after] || document.getElementById(r.after); if (!at) return;
+      at.insertAdjacentHTML('afterend', r.h);
+      last[r.after] = at.nextElementSibling;
+    });
+  };
+
+  const render = (c) => {
+    events = {};
+    const H = c.home || {}, M = c.more || {}, K = c.contact || {};
+    const mail = K.email || '';
+    if (c.meta) {
+      if (c.meta.title) document.title = c.meta.title;
+      const d = document.querySelector('meta[name="description"]'); if (d && c.meta.description) d.setAttribute('content', c.meta.description);
+    }
+
+    /* ---------- page one ---------- */
+    set('#headline', H.headline);
+    const A = H.about || {};
+    set('#aboutTitle .l1', A.title1); set('#aboutTitle .l2', A.title2);
+    set('.about-copy p', A.text);
+    const pill = $('.about-copy .pill'); if (pill) pill.innerHTML = '<span class="dot" aria-hidden="true"></span>' + esc(A.button);
+    const media = $('#aboutMedia');
+    if (media && A.image) { media.classList.add('has-photo'); media.innerHTML = `<img src="${esc(safeUrl(A.image))}" alt="Dipesh Gupta" loading="lazy" decoding="async" style="object-position:50% ${({ top: '15%', bottom: '85%' })[A.imagePos] || '50%'}">`; media.removeAttribute('aria-hidden'); }
+
+    const P = H.projects || {};
+    set('#projects .sec-title', P.title); set('#projects .sec-note', P.note);
+    html('#projects .work-grid', (P.items || []).map(workCard).join(''));
+
+    const X = H.experience || {};
+    set('#xpTitle', X.title);
+    const xs = X.items || [];
+    html('#xpTabs', xs.map((x, i) => `<button type="button" class="role" role="tab" id="xt${i + 1}" aria-controls="xp${i + 1}" aria-selected="${i ? 'false' : 'true'}"${i ? ' tabindex="-1"' : ''}><span><b>${esc(x.org)}</b><small>${esc(x.role)}</small></span><span class="yr">${esc(x.years)}</span></button>`).join(''));
+    html('#xpPanels', xs.map((x, i) => `<div class="xp-panel${i ? '' : ' is-on'}" id="xp${i + 1}" role="tabpanel" aria-labelledby="xt${i + 1}"><h3>${esc(x.title || x.role)}</h3><p class="xp-where"><span>${esc(x.where)}</span><span>${esc(x.dates)}</span></p><ul>${(x.points || []).filter(Boolean).map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>`).join(''));
+
+    const T = H.talk || {};
+    set('#talk .meet-lead', T.lead);
+    const tl = $('#talkTitle a'); if (tl) { tl.href = 'mailto:' + mail; tl.setAttribute('aria-label', `${T.title}. Write to ${mail}`); tl.innerHTML = `<span data-letters>${esc(T.title)}</span>`; }
+    set('#talk .meet-go textPath', T.next);
+
+    /* ---------- page two ---------- */
+    const O = M.opening || {}, L = O.left || [], R = O.right || [];
+    const line = (t, em) => `<span class="dl"><span>${em ? '<em>' : ''}${esc(t)}${em ? '</em>' : ''}</span></span>`;
+    html('#deepL', line(L[0]) + `<span class="dl"><span id="deepSlot">${esc(O.name)}</span></span>` + line(L[1]) + line(L[2], true));
+    html('#deepR', line(R[0], true) + line(R[1], true));
+    const h1 = $('#moreTitle'); if (h1) h1.setAttribute('aria-label', `${L[0] || ''} ${O.name || ''}, ${(L[1] || '').toLowerCase()} ${L[2] || ''}. ${R[0] || ''} ${R[1] || ''}.`.replace(/\s+/g, ' ').trim());
+    ['#deepWordX', '#deepWord'].forEach((s) => html(s, `<span>${esc(O.name)}<i></i></span>`));
+    html('#deepSay', `<p>${O.sayEm ? `<em>${esc(O.sayEm)}</em> ` : ''}${esc(O.say)}</p><p>${esc(O.say2)}</p>`);
+
+    const RO = M.roles || {}, rs = RO.items || [];
+    set('#roles .crew-title', RO.title);
+    const roleLine = (r) => [r.role, r.dates].filter(Boolean).map(esc).join('<br>');
+    html('#crewList', rs.map((r) => `<li data-letter="${esc((r.letter || r.name || '?').trim().charAt(0).toUpperCase())}" data-group="${esc(r.group)}"><h3>${esc(r.name)}</h3><p class="r">${roleLine(r)}</p><p class="t">${esc(r.text)}</p></li>`).join(''));
+    const cnt = $('#roles .crew-count'); if (cnt) cnt.innerHTML = `<b id="crewNow">01</b> / ${pad(rs.length)}<span id="crewGroup">${esc(rs[0] ? rs[0].group : '')}</span>`;
+
+    const S = M.skills || {};
+    set('#skills .wall-title', S.title); set('#skills .wall-note', S.note);
+    const wall = $('#skills');
+    if (wall) {
+      wall.querySelectorAll('.wall-row').forEach((r) => r.remove());
+      wall.insertAdjacentHTML('beforeend', (S.rows || []).filter((r) => r && r.length).map((row) =>
+        `<div class="wall-row"><ul class="wall-track">${row.map((k) => `<li><b>${esc(k.name)}</b><span>${esc(k.group)}</span></li>`).join('')}</ul></div>`).join(''));
+    }
+
+    const RC = M.record || {};
+    html('#record .ledger-words', (RC.words || []).map((w) => `<span>${esc(w)}</span>`).join(''));
+    html('#record .ledger-body', (RC.sections || []).map((sec, i) => {
+      const id = ['education', 'research', 'publications'][i] && sec.nav === ['Education', 'Research', 'Publications'][i] ? ['education', 'research', 'publications'][i] : 'r-' + slug(sec.nav || sec.title) + '-' + i;
+      return part(sec, ` id="${id}" data-nav="${esc(sec.nav || sec.title)}"`, id);
+    }).join(''));
+
+    placeExtras(c.extra);
+    window.SiteEvents = events;
+
+    const AW = M.awards || {}, cards = AW.cards || [];
+    html('#awards .fan-title', `<span>${esc(AW.title1)}</span> <span>${esc(AW.title2)}</span>`);
+    set('#awards .fan-note p', AW.note);
+    html('#awards .fan-keys', cards.map((k) => `<li>${esc((k.key || k.title || '?').trim().charAt(0).toUpperCase())}</li>`).join(''));
+    const back = $('#fanCards .pc-back'), backHTML = back ? back.outerHTML : '';
+    const fc = $('#fanCards');
+    if (fc) {
+      fc.style.setProperty('--n', Math.max(1, cards.length));
+      fc.innerHTML = cards.map((k) => {
+        const g = esc((k.key || k.title || '?').trim().charAt(0).toUpperCase());
+        return `<li class="pc"><div class="pc-face pc-front"><p class="pc-kind">${esc(k.kind)}</p><div class="pc-top"><h3>${esc(k.title)}</h3><b aria-hidden="true">${g}</b></div>
+          <ul class="pc-rows">${(k.rows || []).map((r) => `<li>${esc(r.title)}${r.note ? `<small>${esc(r.note)}</small>` : ''}</li>`).join('')}</ul>
+          <div class="pc-foot" aria-hidden="true"><b>${g}</b><span>${esc(k.title)}</span></div></div>${backHTML}</li>`;
+      }).join('');
+    }
+
+    const CO = M.connect || {};
+    set('#connect .meet-lead', CO.lead);
+    const ct = $('#connect .meet-title a');
+    if (ct) { ct.href = 'mailto:' + mail; ct.setAttribute('aria-label', `${CO.line1} ${CO.line2}. Write to ${mail}`); ct.innerHTML = `<span>${esc(CO.line1)}</span><span>${esc(CO.line2)}</span>`; }
+    const cb = $('#connect .meet-next');
+    if (cb) cb.innerHTML = cb.innerHTML.replace(/(<\/svg>)[^<]*(<svg)/, `$1${esc(CO.back)}$2`);
+
+    /* ---------- the footer, on both pages ---------- */
+    html('#contact address.foot-col', (K.address || []).map(esc).join('<br>'));
+    const links = $('#contact .foot-col:not(address)');
+    if (links) links.innerHTML = (K.links || []).filter((l) => l && l.url).map((l) => `<a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('\n');
+    const fh = $('#contact .foot-main h3'); if (fh && K.footerTitle) { const w = K.footerTitle.split(' '); const cut = Math.ceil(w.length / 2); fh.innerHTML = esc(w.slice(0, cut).join(' ')) + '<br>' + esc(w.slice(cut).join(' ')); }
+    const mt = $('#mailText'); if (mt) { mt.href = 'mailto:' + mail; mt.textContent = mail; }
+    const cr = $('#contact .foot-base > span'); if (cr && K.copyright) cr.textContent = K.copyright;
+  };
+
+  /* ---------- where the content comes from ---------- */
+  const baked = JSON.parse(document.getElementById('siteContent').textContent);
+  const cfg = window.SITE_CONFIG || {};
+  const params = new URLSearchParams(location.search);
+  const inPreview = params.get('preview') === '1' && window.parent !== window;
+  const fromDatabase = () => new Promise((resolve) => {
+    if (!cfg.supabaseUrl || !cfg.supabaseKey || !window.fetch) return resolve(null);
+    const ctl = window.AbortController ? new AbortController() : null;
+    const timer = setTimeout(() => { if (ctl) ctl.abort(); resolve(null); }, 2600);      /* a slow or sleeping database never holds the site up */
+    fetch(`${cfg.supabaseUrl.replace(/\/$/, '')}/rest/v1/site_content?id=eq.published&select=data`, {
+      headers: Object.assign({ apikey: cfg.supabaseKey }, /^eyJ/.test(cfg.supabaseKey) ? { Authorization: `Bearer ${cfg.supabaseKey}` } : {}), signal:   /* new-style keys go only in apikey; old ones may also be a bearer token */ ctl ? ctl.signal : undefined, cache: 'no-store'
+    }).then((r) => (r.ok ? r.json() : null)).then((rows) => { clearTimeout(timer); resolve(rows && rows[0] && rows[0].data && rows[0].data.home ? rows[0].data : null); })
+      .catch(() => { clearTimeout(timer); resolve(null); });
+  });
+  const fromAdmin = () => new Promise((resolve) => {
+    let ask = 0;
+    const done = (c) => { clearInterval(ask); clearTimeout(timer); resolve(c); };
+    const timer = setTimeout(() => done(null), 15000);       /* a busy computer can be slow to answer; after this the built-in words show */
+    window.addEventListener('message', function on(e) {
+      if (e.source !== window.parent || !e.data || e.data.type !== 'site-content') return;
+      window.removeEventListener('message', on);
+      window.SITE_PREVIEW = { scroll: e.data.scroll || 0, view: e.data.view || 'home', anchor: e.data.anchor || '' };
+      done(e.data.content || null);
+    });
+    const hello = () => window.parent.postMessage({ type: 'site-ready' }, '*');
+    hello(); ask = setInterval(hello, 1000);
+  });
+  const start = (content) => {
+    try { render(upgrade(content, baked) || baked); } catch (e) { if (window.console) console.warn('content not applied:', e); try { render(baked); } catch (x) { /* the page keeps the words it was built with */ } }
+    const app = document.getElementById('app'), s = document.createElement('script');
+    s.textContent = app.textContent;
+    document.body.appendChild(s);
+  };
+  window.SiteContent = { render, baked, upgrade };
+  const parsed = new Promise((r) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', r, { once: true }) : r()));
+  Promise.all([inPreview ? fromAdmin() : fromDatabase(), parsed]).then(([content]) => start(content));   /* the page below must be read in full first */
+})();
+</script>
+<script type="text/x-app" id="app">
 /* ====================================================================
    Stage: the dark panel, the 3D blocks and the water effect.
    Plain WebGL2, no libraries.
@@ -2969,7 +3332,7 @@ void main(){
    back to glass. WebGL2, no libraries. The words are drawn once into
    textures by the 2D canvas, so they use the page's own typeface.
 ==================================================================== */
-const Glow = (() => {
+const makeGlow = () => (() => {
   'use strict';
   const api = { ok: false, init() { return false; }, resize() {}, setWords() {}, frame() {} };
   const HEAD = '#version 300 es\nprecision highp float;\n';
@@ -3182,6 +3545,7 @@ void main(){
   };
   return api;
 })();
+const Glow = makeGlow();
 
 /* ====================================================================
    Intro, menu and controls
@@ -4232,8 +4596,8 @@ void main(){
 
   /* ---------- page two, Skills: the rows run with the scroll. Down sends them right to left, up sends them back,
      a faster scroll drives them faster, and when the page rests they keep a steady pace in the last direction ---------- */
-  const Wall = (() => {
-    const wall = $('#skills'), view = $('#viewMore'), api = { tick: () => false };
+  const makeWall = (wall) => {
+    const view = wall && wall.closest('.view'), api = { tick: () => false };
     if (!wall || reduce.matches) return api;
     const rows = [...wall.querySelectorAll('.wall-row')].map((row, i) => {
       const track = row.querySelector('.wall-track');
@@ -4265,7 +4629,8 @@ void main(){
       return true;
     };
     return api;
-  })();
+  };
+  const Wall = makeWall($('#skills'));
 
   /* ---------- page two, the record: giant words slide sideways with the scroll and take colour from the pointer ---------- */
   /* ---------- page two, the close: the page turns blue, then the scroll fans a deck of four cards out, turns them over
@@ -4307,14 +4672,14 @@ void main(){
         return;
       }
       const gut = parseFloat(getComputedStyle(sec.querySelector('.fan-head')).paddingLeft) || 40, gap = Math.min(28, Math.max(14, W * .02));
-      const cw = Math.min(312, (W - 2 * gut - 3 * gap) / 4);
+      const n = Math.max(1, cards.length), cw = Math.min(312, (W - 2 * gut - (n - 1) * gap) / n);
       wrap.style.setProperty('--cw', cw.toFixed(1) + 'px');
       let ch = cw * 1.62;                                   /* at least the shape of a playing card, taller if the words need it */
       cards.forEach((c) => { const f = c.firstElementChild; f.style.position = 'relative'; f.style.height = 'auto'; ch = Math.max(ch, f.offsetHeight); f.style.position = ''; f.style.height = ''; });
       wrap.style.setProperty('--chh', Math.ceil(ch) + 'px');
       const top = Math.max(98, H * .15), k = Math.max(.7, Math.min(1, (H - top - 30) / ch));        /* shrink the row a little on short screens */
       wrap.style.transform = `translate3d(0,${top.toFixed(1)}px,0) scale(${k.toFixed(4)})`;
-      const total = 4 * cw + 3 * gap;
+      const total = n * cw + (n - 1) * gap;
       ribbons(W, H, [[-.06, 1.08], [.1, .9], [.3, .66], [.52, .5], [.74, .32], [.93, .2], [1.08, .12]], [[1.08, .34], [.985, .52], [.975, .8], [.8, .975], [.56, .935], [.36, 1.1]]);
       geo = { phone: false, W, H, cw, ch, x: cards.map((c, i) => (W - total) / 2 + i * (cw + gap)), cx: (W - cw) / 2 };
     };
@@ -4352,7 +4717,7 @@ void main(){
       ud = snap ? u : ud + (u - ud) * (1 - Math.exp(-dt * 7)); snap = false;
       const p = Math.max(0, ud), rise = 1 - out(lin(-1, -.25, ud));
       cards.forEach((c, i) => {
-        const off = i - 1.5, fan = io(lin(.03, .3, p)), flip = io(lin(.33 + i * .1, .56 + i * .1, p)), arc = Math.sin(flip * Math.PI);
+        const n = cards.length, step = n > 1 ? .3 / (n - 1) : 0, off = i - (n - 1) / 2, fan = io(lin(.03, .3, p)), flip = io(lin(.33 + i * step, .56 + i * step, p)), arc = Math.sin(flip * Math.PI);
         const x = mix(geo.cx + off * 9, geo.x[i], fan), y = mix(20 - i * 5, 0, fan) + rise * 90 - arc * 14;
         const rz = off * (mix(4.5, 0, fan) + Math.sin(fan * Math.PI) * 5) + arc * (i % 2 ? -3 : 3);
         c.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) perspective(1700px) rotateZ(${rz.toFixed(2)}deg) rotateY(${(180 * (1 - flip)).toFixed(2)}deg) scale(${(1 + arc * .045).toFixed(4)})`;
@@ -4612,14 +4977,15 @@ void main(){
     return heap;
   })();
 
-  const Ledger = (() => {
-    const sec = $('#record'), bg = sec.querySelector('.ledger-bg'), cv = $('#ledgerGl'), view = $('#viewMore'), last = sec.querySelector('.lg:last-of-type');
-    const WORDS = ['BRANCH', 'TOPPER', 'RESEARCH', 'SCHOLAR', 'HACKATHON', 'WINNER', 'STAGE', 'ANCHOR'];
+  const makeLedger = (sec, Glow, tone) => {
+    const bg = sec.querySelector('.ledger-bg'), cv = sec.querySelector('.ledger-bg canvas'), view = sec.closest('.view'), last = sec.querySelector('.lg:last-of-type');
+    const WORDS = [...sec.querySelectorAll('.ledger-words span')].map((w) => w.textContent.trim().toUpperCase()).filter(Boolean);
+    if (!WORDS.length) WORDS.push('DIPESH');
     const api = { covers: false, tick: () => false };
     const phone = window.matchMedia('(max-width:820px)'), lim = (v, a, b) => Math.min(b, Math.max(a, v));
     sec.classList.add('is-scripted');
     sec.querySelectorAll('.lg').forEach((g) => { [...g.querySelectorAll('.lg-head, .lg-group')].forEach((el, i) => el.style.setProperty('--i', Math.min(i, 9))); Reveal.add(g, .86); });
-    if (reduce.matches) return api;                      /* the plain outlines stay; nothing moves */
+    if (reduce.matches || !Glow) return api;                      /* the plain outlines stay; nothing moves */
 
     let tried = false, gl3 = false, inView = !('IntersectionObserver' in window), cw = 0, ch = 0, built = 0, F = 0, meta = [], scale = 1, idle = 1;
     const ptr = { x: .5, y: .5, nx: .5, ny: .5, t: -1e9, has: false };
@@ -4660,7 +5026,7 @@ void main(){
       const r = sec.getBoundingClientRect();
       api.covers = r.top <= 0 && r.bottom >= window.innerHeight;
       const pitch = F * .93, h = F * .86, n = Math.ceil(r.height / pitch) + 1, lines = [];
-      const blue = Fan.blue, end = last.getBoundingClientRect().bottom - b.top;      /* where the last list stops */
+      const tn = tone(), blue = tn.blue, end = last.getBoundingClientRect().bottom - b.top;      /* where the last list stops */
       for (let i = 0; i < n; i++) {
         const top = r.top - b.top + i * pitch + F * .1;
         if (top > ch + 8 || top + h < -8) continue;
@@ -4671,7 +5037,7 @@ void main(){
       }
       const now = performance.now(), moving = ptr.has && now - ptr.t < 140;
       idle += ((now - ptr.t > 2200 ? 1 : 0) - idle) * (1 - Math.exp(-dt * 1.5));
-      Glow.frame(dt, { lines, scale, idle, rest: phone.matches ? .55 : .9, bg: Fan.rgb, calm: 1 - blue, ptr: { x: ptr.nx, y: ptr.ny, px: ptr.x, py: ptr.y, on: moving } });
+      Glow.frame(dt, { lines, scale, idle, rest: phone.matches ? .55 : .9, bg: tn.rgb, calm: 1 - blue, ptr: { x: ptr.nx, y: ptr.ny, px: ptr.x, py: ptr.y, on: moving } });
       ptr.x = ptr.nx; ptr.y = ptr.ny;
       return true;
     };
@@ -4686,7 +5052,8 @@ void main(){
       ptr.nx = nx; ptr.ny = ny; ptr.t = now; ptr.has = true;
     }, { passive: true });
     return api;
-  })();
+  };
+  const Ledger = makeLedger($('#record'), Glow, () => Fan);
 
   /* ---------- email links: many computers have no mail app set up, so a click on the address would seem to do
      nothing. The address is copied as well, and a note says so, whatever happens next. ---------- */
@@ -4761,6 +5128,165 @@ void main(){
     };
     btn.addEventListener('click', () => {
       try { navigator.clipboard.writeText(text.textContent.trim()).then(() => say('Copied'), select); } catch (e) { select(); }
+    });
+  })();
+
+  /* ---------- events: a gallery opens over the page; the photos arrive row by row, and one can be viewed on its own ---------- */
+  const Events = (() => {
+    const data = window.SiteEvents || {};
+    const X = '<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 4l12 12M16 4 4 16"/></svg>';
+    const ARR = (d) => `<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="${d > 0 ? 'M3 10h14M12 5l5 5-5 5' : 'M17 10H3M8 5l-5 5 5 5'}"/></svg>`;
+    const sheet = document.createElement('div');
+    sheet.className = 'ev-sheet'; sheet.id = 'evSheet'; sheet.hidden = true;
+    sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'evTitle');
+    sheet.innerHTML = `<div class="ev-scroll"><header class="ev-top"><h2 class="ev-title" id="evTitle"></h2><p class="ev-meta"></p><p class="ev-note"></p></header>
+      <button class="ev-hero" type="button"><img alt=""></button><div class="ev-grid"></div>
+      <div class="ev-end"><button class="ev-back" type="button">Back to the record</button></div></div>
+      <button class="ev-close" type="button" aria-label="Close the photos">${X}</button>
+      <div class="ev-box" role="dialog" aria-modal="true" aria-label="Photo"><p class="ev-count" aria-live="polite"></p><img alt="">
+        <button class="ev-arrow" type="button" data-step="-1" aria-label="Previous photo">${ARR(-1)}</button><button class="ev-arrow" type="button" data-step="1" aria-label="Next photo">${ARR(1)}</button>
+        <button class="ev-close" type="button" aria-label="Close this photo">${X}</button></div>`;
+    document.body.appendChild(sheet);
+    const scroller = sheet.querySelector('.ev-scroll'), grid = sheet.querySelector('.ev-grid'), hero = sheet.querySelector('.ev-hero'), box = sheet.querySelector('.ev-box'), boxImg = box.querySelector('img');
+    let list = [], at = 0, opener = null, pushed = false, io = null, leaveT = 0;
+    const words = (t) => String(t || '').split(/\s+/).filter(Boolean).map((w, i) => `<span class="w"><span style="--i:${i}">${w.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</span></span>`).join(' ');
+    const ratio = (p) => (p.w && p.h ? p.w / p.h : 1.5);
+    const size = (el, r) => { el.style.aspectRatio = r; el.style.flexGrow = r; el.style.flexBasis = `calc(${r.toFixed(3)} * var(--rh))`; };
+
+    /* photos arrive in the order of the rows they sit on: a row together, each photo a beat after its neighbour */
+    const reveal = (items) => {
+      const rows = new Map();
+      items.forEach((el) => { const top = Math.round(el.offsetTop); if (!rows.has(top)) rows.set(top, []); rows.get(top).push(el); });
+      [...rows.keys()].sort((a, b) => a - b).forEach((top, r) => rows.get(top).forEach((el, c) => { el.style.setProperty('--d', `${r * 140 + c * 70}ms`); el.classList.add('in'); }));
+    };
+    const watch = () => {
+      if (io) io.disconnect();
+      const items = [...grid.children];
+      if (reduce.matches || !('IntersectionObserver' in window)) { items.forEach((el) => el.classList.add('in')); return; }
+      let batch = [], t = 0;
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { batch.push(e.target); io.unobserve(e.target); } });
+        clearTimeout(t); t = setTimeout(() => { reveal(batch); batch = []; }, 30);
+      }, { root: scroller, rootMargin: '0px 0px -6% 0px', threshold: .12 });
+      items.forEach((el) => io.observe(el));
+    };
+
+    const show = (key, from) => {
+      const ev = data[key]; if (!ev) return;
+      clearTimeout(leaveT); sheet.classList.remove('is-leaving');
+      opener = from || null;
+      const cover = ev.cover || ev.photos[0];
+      list = cover ? [cover].concat(ev.photos.filter((p) => p !== cover && p.src !== cover.src)) : ev.photos.slice();
+      sheet.querySelector('.ev-title').innerHTML = words(ev.title);
+      const n = ev.photos.length;
+      sheet.querySelector('.ev-meta').innerHTML = [ev.date, ev.place && ev.note ? ev.place : '', `${n} ${n === 1 ? 'photo' : 'photos'}`].filter(Boolean).map((t) => `<span>${String(t).replace(/</g, '&lt;')}</span>`).join('');
+      sheet.querySelector('.ev-note').textContent = ev.place && ev.note ? ev.note : (ev.note || ev.place || '');
+      hero.hidden = !cover;
+      if (cover) { const im = hero.querySelector('img'); im.src = cover.src; im.alt = `${ev.title}, cover photo`; hero.setAttribute('aria-label', `Open the cover photo of ${ev.title}`); }
+      grid.innerHTML = list.slice(1).map((p, i) => `<button class="ev-item" type="button" data-at="${i + 1}" aria-label="Open photo ${i + 2} of ${list.length}"><span class="ev-clip"><img src="${(p.thumb || p.src).replace(/"/g, '%22')}" alt="" loading="lazy" decoding="async"></span></button>`).join('');
+      [...grid.children].forEach((el, i) => {
+        const p = list[i + 1]; size(el, ratio(p));
+        if (!(p.w && p.h)) el.querySelector('img').addEventListener('load', (e) => { const im = e.target; if (im.naturalWidth) size(el, im.naturalWidth / im.naturalHeight); }, { once: true });
+      });
+      scroller.scrollTop = 0;
+      sheet.hidden = false;
+      document.documentElement.classList.add('ev-lock');
+      requestAnimationFrame(() => requestAnimationFrame(() => { sheet.classList.add('is-open'); watch(); }));
+      try { history.pushState({ ev: key }, ''); pushed = true; } catch (e) { pushed = false; }
+      sheet.querySelector('.ev-close').focus({ preventScroll: true });
+    };
+    const hide = () => {
+      if (sheet.hidden) return;
+      closeBox(true);
+      sheet.classList.add('is-leaving');
+      document.documentElement.classList.remove('ev-lock');
+      leaveT = setTimeout(() => { sheet.classList.remove('is-open', 'is-leaving'); sheet.hidden = true; grid.innerHTML = ''; if (io) io.disconnect(); }, reduce.matches ? 200 : 720);
+      if (opener) opener.focus({ preventScroll: true });
+      Page.kick();
+    };
+    const close = () => { if (pushed && history.state && history.state.ev) history.back(); else hide(); };     /* the phone's back button closes it too */
+    window.addEventListener('popstate', () => { pushed = false; if (!box.classList.contains('is-on')) hide(); else { closeBox(true); hide(); } });
+
+    /* ---------- one photo ---------- */
+    const paint = () => {
+      const p = list[at]; if (!p) return;
+      boxImg.classList.add('is-swap');
+      const next = new Image(); next.decoding = 'async'; next.src = p.src;
+      const done = () => { boxImg.src = p.src; boxImg.alt = `Photo ${at + 1} of ${list.length}`; boxImg.classList.remove('is-swap'); };
+      if (next.complete) done(); else { next.onload = done; next.onerror = done; }
+      box.querySelector('.ev-count').textContent = `${String(at + 1).padStart(2, '0')} / ${String(list.length).padStart(2, '0')}`;
+      box.querySelector('[data-step="-1"]').disabled = at === 0;
+      box.querySelector('[data-step="1"]').disabled = at === list.length - 1;
+      [list[at + 1], list[at - 1]].forEach((q) => { if (q) { const im = new Image(); im.src = q.src; } });   /* the neighbours are ready before they are asked for */
+    };
+    let boxFrom = null;
+    const openBox = (i, from) => { at = Math.max(0, Math.min(list.length - 1, i)); boxFrom = from; box.classList.add('is-on'); paint(); box.querySelector('.ev-close').focus({ preventScroll: true }); };
+    const closeBox = (quiet) => { if (!box.classList.contains('is-on')) return; box.classList.remove('is-on'); if (!quiet && boxFrom) boxFrom.focus({ preventScroll: true }); };
+    const step = (d) => { const n = at + d; if (n < 0 || n >= list.length) return; at = n; paint(); };
+
+    document.addEventListener('click', (e) => { const b = e.target.closest('.ev-open'); if (b) { e.preventDefault(); show(b.dataset.ev, b); } });
+    sheet.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t.closest('.ev-box .ev-close')) return closeBox();
+      if (t.closest('.ev-close') || t.closest('.ev-back')) return close();
+      const a = t.closest('.ev-arrow'); if (a) return step(+a.dataset.step);
+      const it = t.closest('.ev-item'); if (it) return openBox(+it.dataset.at, it);
+      if (t.closest('.ev-hero')) return openBox(0, hero);
+      if (t === box) closeBox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (sheet.hidden) return;
+      const boxOn = box.classList.contains('is-on');
+      if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); if (boxOn) closeBox(); else close(); }
+      else if (boxOn && e.key === 'ArrowRight') step(1);
+      else if (boxOn && e.key === 'ArrowLeft') step(-1);
+      else if (e.key === 'Tab') {                                     /* focus stays inside what is open */
+        const scope = boxOn ? box : sheet, f = [...scope.querySelectorAll('button:not([disabled])')].filter((b) => !b.closest('[hidden]') && (boxOn || !b.closest('.ev-box')));
+        if (!f.length) return;
+        const i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    }, true);
+    /* a swipe sideways moves between photos */
+    let sx = 0, sy = 0, sw = false;
+    box.addEventListener('pointerdown', (e) => { sx = e.clientX; sy = e.clientY; sw = true; });
+    box.addEventListener('pointerup', (e) => {
+      if (!sw) return; sw = false;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
+    });
+    box.addEventListener('pointercancel', () => { sw = false; });
+    return { show, hide, get open() { return !sheet.hidden; } };
+  })();
+
+  /* ---------- sections added in the studio: each one runs the motion of the section it borrows from ---------- */
+  const Extra = (() => {
+    const ticks = [], DARK = { blue: 0, rgb: [5 / 255, 6 / 255, 10 / 255] };
+    let glows = 0;
+    document.querySelectorAll('.xs').forEach((sec) => {
+      const t = sec.dataset.tpl;
+      if (t === 'list' || t === 'events') {
+        const own = glows < 3 && !reduce.matches;          /* each water-lit list has its own small canvas; past three, the plain outlines stay */
+        if (own) glows += 1;
+        ticks.push(makeLedger(sec, own ? makeGlow() : null, () => DARK).tick);
+      } else if (t === 'rows') ticks.push(makeWall(sec).tick);
+      else if (t === 'cards') {
+        Reveal.add(sec.querySelector('.sec-head'), .86);
+        sec.querySelectorAll('.work').forEach((w) => { const f = w.querySelector('[data-bend]'); Reveal.add(w, .84, () => setTimeout(() => Bend.open(f), 1200)); });
+      } else Reveal.add(sec, .8);
+    });
+    return { tick: (dt) => ticks.reduce((on, f) => f(dt) || on, false) };
+  })();
+
+  /* ---------- a door only you know: five quick clicks on the copyright line open the studio ---------- */
+  (() => {
+    const mark = $('#contact .foot-base > span');
+    if (!mark || window.SITE_PREVIEW) return;
+    let n = 0, t = 0;
+    mark.addEventListener('click', () => {
+      clearTimeout(t); n += 1;
+      if (n >= 5) { n = 0; window.location.href = 'admin/'; return; }
+      t = setTimeout(() => { n = 0; }, 1600);
     });
   })();
 
@@ -4947,8 +5473,8 @@ void main(){
     const frame = (now) => {
       raf = 0;
       const dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
-      const a = Trail.tick(dt), a2 = Trail2.tick(dt), b = PageWater.tick(dt), c = Brand.tick(), d = Bend.tick(dt), e = Reveal.tick(), f = Reel.tick(dt), g = Scene.tick(dt), h = Roles.tick(dt), i = Wall.tick(dt), k = Fan.tick(dt), j = Ledger.tick(dt), l = Meet.tick(dt), m = Talk.tick(dt), n = Bar.tick();
-      if ((a || a2 || b || c || d || e || f || g || h || i || j || k || l || m || n) && !document.hidden) raf = requestAnimationFrame(frame);
+      const a = Trail.tick(dt), a2 = Trail2.tick(dt), b = PageWater.tick(dt), c = Brand.tick(), d = Bend.tick(dt), e = Reveal.tick(), f = Reel.tick(dt), g = Scene.tick(dt), h = Roles.tick(dt), i = Wall.tick(dt), k = Fan.tick(dt), j = Ledger.tick(dt), l = Meet.tick(dt), m = Talk.tick(dt), n = Bar.tick(), o = Extra.tick(dt);
+      if ((a || a2 || b || c || d || e || f || g || h || i || j || k || l || m || n || o) && !document.hidden) raf = requestAnimationFrame(frame);
     };
     const kick = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
     document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
@@ -4964,7 +5490,16 @@ void main(){
     window.scrollTo({ top: 0, behavior: 'instant' });
     intro(true).catch(() => finish(true));
   });
-  intro(false).catch(() => finish(false)).then(() => Views.live());
+  /* in the admin's preview the opening plays no loader and the page comes back where it was */
+  const preview = window.SITE_PREVIEW;
+  (preview ? Promise.resolve().then(() => { Stage.start(); finish(false); }) : intro(false).catch(() => finish(false))).then(() => {
+    Views.live();
+    if (!preview) return;
+    const spot = preview.anchor && preview.anchor !== 'top' && preview.anchor !== 'more' ? document.getElementById(preview.anchor) : null;
+    const land = () => { if (spot) spot.scrollIntoView({ behavior: 'instant', block: 'start' }); else if (preview.scroll) window.scrollTo(0, preview.scroll); Page.kick(); };
+    land(); requestAnimationFrame(land); setTimeout(land, 350);   /* again once the scenes have set their heights */
+    setInterval(() => { try { window.parent.postMessage({ type: 'site-scroll', y: window.scrollY, view: Views.cur }, '*'); } catch (e) { /* the admin has gone */ } }, 400);
+  });
 })();
 </script>
 </body>

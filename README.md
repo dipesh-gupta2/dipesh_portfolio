@@ -1,36 +1,27 @@
 # Dipesh Gupta - portfolio
 
-The whole site is three files:
+A two-page portfolio with a built-in editor (the studio).
 
 | File | What it is |
 |---|---|
-| `index.html` | Both pages of the site (all styles and scripts are inside it) |
-| `reel.mp4` | The video on page one |
-| `reel-poster.jpg` | The still picture shown before the video loads |
+| `index.html` | Both pages of the site; all styles and scripts are inside it |
+| `reel.mp4`, `reel-poster.jpg` | The video on page one and its still picture |
+| `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest` | The site icon in the browser tab, on phones and in search results |
+| `config.js` | Where the site finds its database (empty until you set it up) |
+| `admin/index.html` | The studio: sign in, edit, preview, publish |
+| `supabase/setup.sql` | Run once in Supabase to create the tables, rules and photo folder |
+| `.github/workflows/keep-alive.yml` | Keeps the free database awake |
+| `vercel.json` | Safety headers for Vercel |
+| `SETUP.md` | Step-by-step setup for the studio |
 
-Keep the three names exactly as they are. The page looks for the video and the picture by these names, in the same folder.
+Keep the file names as they are; the pages find each other by these names.
 
-## Put it online (about 10 minutes, free)
+## Hosting
 
-Button names on GitHub and Vercel change a little over time; look for the closest match.
+GitHub (private repository) holds the files and Vercel publishes them. Every push to `main` republishes the site.
 
-### 1. GitHub: store the files
-1. Create an account at github.com.
-2. Click **New repository**. Name it `portfolio`, choose **Private**, click **Create repository**.
-3. On the empty repository page click **uploading an existing file**.
-4. Drag in `index.html`, `reel.mp4` and `reel-poster.jpg` (the three files themselves, not the zip).
-5. Click **Commit changes**.
+## The studio
 
-### 2. Vercel: publish them
-1. Go to vercel.com and choose **Continue with GitHub**.
-2. Click **Add New**, then **Project**.
-3. Find `portfolio` in the list and click **Import**. If it is not listed, click the link to adjust GitHub permissions and allow Vercel to see that repository.
-4. Leave every setting as it is (framework: **Other**) and click **Deploy**.
-5. After about a minute Vercel shows your live address, ending in `.vercel.app`.
+Without a database the site shows the words it was built with, and `/admin/` opens in a try-it-out mode. To edit for real, follow `SETUP.md`.
 
-### 3. Updating later
-Upload a new `index.html` to the same GitHub repository (**Add file**, then **Upload files**, then **Commit changes**). Vercel notices and republishes by itself.
-
-## Good to know
-- A private repository hides the project on GitHub. The published website is still public, and like any website its page code can be viewed in a browser.
-- Never put passwords or secret keys in these files. When the admin page is added, its keys go into Vercel's settings, not into the repository.
+The key in `config.js` is the public "publishable" key, which is safe to show: the database rules decide what it can do. Never put a secret or service_role key in any file here.
